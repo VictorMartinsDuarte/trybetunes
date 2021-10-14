@@ -23,5 +23,5 @@ class App extends React.Component {
     );
   }
 }
-
+// Pra enviar pro Git de novo
 export default App;
