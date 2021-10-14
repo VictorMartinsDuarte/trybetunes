@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 // import { PropTypes } from 'prop-types';
 import getMusics from '../services/musicsAPI';
+import MusicList from './MusicList';
 
 class MusicCard extends Component {
   constructor() {
@@ -29,21 +30,11 @@ class MusicCard extends Component {
 
   handleMap = () => {
     const { musicInfo } = this.state;
-    return musicInfo.slice(1).map(({ trackName, previewUrl }) => (
-      <>
-        <p>{ trackName }</p>
-        <audio
-          data-testid="audio-component"
-          key={ trackName }
-          src={ previewUrl }
-          controls
-        >
-          <track kind="captions" />
-          O seu navegador não suporta o elemento
-          <code>audio</code>
-          .
-        </audio>
-      </>
+    return musicInfo.slice(1).map((musicObj) => (
+      <MusicList
+        key={ musicObj.trackName }
+        musicObj={ musicObj }
+      />
     ));
   }
 
