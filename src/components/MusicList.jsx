@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Loading from './Loading';
+import { getFavoriteSongs, addSong, removeSong } from '../services/favoriteSongsAPI';
 
 class MusicList extends Component {
   constructor() {
@@ -12,9 +13,12 @@ class MusicList extends Component {
     };
   }
 
+  componentDidMount() {
+    this.handleLocalStorage();
+  }
+
   handleFavoriteSong = async ({ target: { checked } }) => {
     const { musicObj } = this.props;
-    console.log(musicObj);
     this.setState({
       loading: true,
     });
@@ -23,6 +27,23 @@ class MusicList extends Component {
       await addSong(musicObj);
       this.setState({
         loading: false,
+        checkbox: true,
+      });
+    } else {
+      await removeSong(musicObj);
+      this.setState({
+        loading: false,
+        checkbox: false,
+      });
+    }
+  }
+
+  handleLocalStorage = async () => {
+    const { musicObj: { trackId } } = this.props;
+    const storageFavSongs = await getFavoriteSongs();
+    const boolSome = storageFavSongs.some((storage) => storage.trackId === trackId);
+    if (boolSome === true) {
+      this.setState({
         checkbox: true,
       });
     }
